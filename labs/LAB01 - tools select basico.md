@@ -264,7 +264,9 @@ Escribe una consulta SQL para seleccionar las columnas título (`titulo`) y repr
 
 Solución:
 ```sql
-
+Select titulo,reproducciones
+from cancion_muestra
+order by reproducciones desc;
 ```
 
 | titulo                | reproducciones |
@@ -408,7 +410,8 @@ Escribe una consulta para seleccionar las distintas combinaciones de país (`pai
 
 Solución:
 ```sql
-
+Select Distinct pais,genero
+from cancion;
 ```
 
 | pais           | genero |
@@ -463,7 +466,9 @@ Escribe una consulta para seleccionar las reproducciones (`reproducciones`) de l
 
 Solución:
 ```sql
-
+Select reproducciones
+from cancion
+where reproducciones < 1000000;
 ```
 
 | reproducciones |
@@ -486,7 +491,9 @@ Escribe otra consulta para seleccionar el género (`genero`) y el idioma (`idiom
 
 Solución:
 ```sql
-
+Select distinct genero,idioma
+from cancion
+where reproducciones < 1000000 ;
 ```
 
 | genero | idioma |
@@ -556,7 +563,9 @@ Utiliza el operador not para seleccionar las canciones (solo las columnas `titul
 
 Solución:
 ```sql
-
+Select distinct titulo,genero,pais
+from cancion
+where genero != "Rap" ;
 ```
 
 | titulo                     | genero | pais           |
@@ -597,7 +606,9 @@ El operador `OR` de SQL es un operador ‘o inclusivo’: se ejecuta correctamen
 
 Solución:
 ```sql
-
+Select  titulo,idioma,pais
+from cancion
+where (idioma = "ES" or pais ="España") and NOT (idioma = "ES" and pais ="España");
 ```
 
 | titulo           | idioma | pais           |
@@ -705,7 +716,10 @@ Escribe una consulta que calcule y devuelva una columna llamada `porcentaje_me_g
 
 Solución:
 ```sql
-
+Select  
+	Round(((me_gusta*1.00/reproducciones)*100),1) as porcentaje_me_gusta
+from cancion
+limit 10;
 ```
 
 | porcentaje_me_gusta |
@@ -772,7 +786,9 @@ Escribe una consulta que calcule y devuelva una columna llamada `que_donde` que 
 
 Solución:
 ```sql
-
+Select distinct 
+	genero||" "||pais as que_donde
+from cancion
 ```
 
 | que_donde           |
