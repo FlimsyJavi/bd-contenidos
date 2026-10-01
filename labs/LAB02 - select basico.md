@@ -21,7 +21,13 @@ Escribe una consulta que calcule y devuelva una columna llamada `que_donde` que 
 
 Solución:
 ```sql
-
+Select  
+	UPPER(genero)||" "|| Lower(pais) as que_donde,
+	round(((me_gusta*1.00/reproducciones)*100),1) as porcentaje_me_gusta
+from cancion
+where idioma != "ES"
+order by porcentaje_me_gusta desc
+limit 10;
 
 ```
 
@@ -167,7 +173,18 @@ Para emitir una canción en la radio hay que añadirle una cuña publicitaria. E
 
 Solución:
 ```sql
-
+Select distinct 
+		titulo,
+		pais,
+		duracion,
+		case
+		when pais = "Reino Unido" then Round((duracion+30)*1.00/60,2)
+		when pais = "España" then Round((duracion+45)*1.00/60,2)
+		end as duracion_radio_min
+		
+		from cancion
+		order by duracion desc
+		limit 20;
 
 ```
 
@@ -371,7 +388,10 @@ Escribe una consulta para encontrar las canciones (`cancion`) cuya duración (`d
 
 Solución:
 ```sql
-
+Select distinct *
+		
+		from cancion
+		where duracion is not null and idioma is null;
 
 ```
 
@@ -471,7 +491,11 @@ Escribe una consulta que devuelva todas las columnas de las canciones y añada u
 
 Solución:
 ```sql
-
+Select distinct *,
+coalesce(duracion,reproducciones,me_gusta,valoracion,-1) as primer_dato		
+from cancion
+order by id_cancion desc
+limit 10;
 
 ```
 
@@ -554,7 +578,10 @@ Salida:
 
 Solución:
 ```sql
-
+SELECT 
+avg(reproducciones)
+FROM cancion
+	WHERE reproducciones > 1000000
 
 ```
 
@@ -594,6 +621,9 @@ Salida:
 
 Solución:
 ```sql
+SELECT  
+count(distinct anio) as anios_distintos
+FROM cancion;
 
 
 ```
@@ -664,7 +694,11 @@ Escribe una consulta que muestre cada año de publicación (`anio`) distinto en 
 
 Solución:
 ```sql
-
+SELECT  
+anio,
+	count(id_cancion) as canciones_mismo_anio
+FROM cancion
+group by anio;
 
 ```
 
@@ -782,7 +816,11 @@ Escribe una consulta que cuente el número de canciones de cada una de las sigui
 Solución:
 ```sql
 
-
+SELECT
+    SUM(CASE WHEN duracion < 200 THEN 1 ELSE 0 END) corta,
+    SUM(CASE WHEN duracion >= 200 AND duracion <= 300 THEN 1 ELSE 0 END) media,
+    SUM(CASE WHEN duracion > 300 THEN 1 ELSE 0 END) larga
+FROM cancion;
 ```
 
 Resultado:
