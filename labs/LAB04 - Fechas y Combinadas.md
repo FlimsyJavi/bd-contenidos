@@ -242,7 +242,9 @@ Escribe una consulta para obtener el nombre, apellido1 y fechaNac de los emplead
 
 Solución:
 ```sql
-
+SELECT nombre, apellido1,fechaNac
+FROM empleado
+where (CURRENT_DATE-fechaNac) between 61 and 71
 ```
 
 Tabla resultado:
