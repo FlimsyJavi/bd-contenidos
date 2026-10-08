@@ -521,6 +521,19 @@ Escribe una consulta que devuelva los empleados con más de un familiar que no s
 
 Solución:
 ```sql
+SELECT dni AS empleado
+FROM EMPLEADO
+WHERE dni NOT IN (
+    SELECT supervisor
+    FROM EMPLEADO
+    WHERE supervisor IS NOT NULL
+)
+AND dni IN (
+    SELECT empleado
+    FROM FAMILIAR
+    GROUP BY empleado
+    HAVING COUNT(*) > 1
+);
 
 ```
 
@@ -651,7 +664,20 @@ Escribe una consulta que devuelva el dni de los empleados que no tienen familiar
 
 Solución:
 ```sql
+SELECT dni 
+FROM EMPLEADO
+WHERE dni NOT IN (
+    SELECT empleado
+    FROM familiar
+    WHERE empleado IS NOT NULL
+)
+union
 
+    SELECT supervisor as dni
+    FROM empleado
+	WHERE supervisor IS NOT NULL
+    GROUP BY supervisor
+    HAVING COUNT(*) > 2
 
 ```
 
@@ -772,7 +798,24 @@ Escribe una consulta que devuelva los proyectos del departamento con mayor núme
 
 Solución:
 ```sql
-
+WITH resumen_dpto AS (
+    SELECT 
+        dpto,
+        COUNT(*) AS num_empleados
+    FROM empleado
+    GROUP BY dpto
+)
+SELECT 
+    nombre,
+    ubicacion,
+    dpto
+FROM proyecto
+WHERE dpto = (
+    SELECT dpto
+    FROM resumen_dpto
+    ORDER BY num_empleados DESC
+    LIMIT 1
+);
 ```
 
 Tabla resultado:
