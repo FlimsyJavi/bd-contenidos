@@ -21,6 +21,11 @@ Escribe una consulta para obtener el nombre del departamento, su director, su fe
 
 Solución:
 ```sql
+Select nombre,
+director,
+fechaIngresoDirector as fecha,
+max(strftime("%m",fechaIngresoDirector)) as mes
+from departamento;
 
 ```
 
@@ -170,7 +175,14 @@ Tabla resultado:
 Escribe una consulta que devuelva el nombre de cada proyecto (nombre_proyecto) y el total de horas trabajadas en cada uno (total_horas_dedicadas), ordena los resultados por las horas trabajabas empezando por el de mayor horas. 
 
 ```sql
-
+SELECT
+    p.nombre AS nombre_proyecto,
+    SUM(t.horas) AS total_horas_dedicadas
+FROM PROYECTO p
+ JOIN TRABAJA_EN t
+    ON p.numero = t.proyecto
+GROUP BY p.numero
+ORDER BY total_horas_dedicadas DESC;
 ```
 
 Tabla resultado:
@@ -260,7 +272,20 @@ Escribe una consulta que devuelva el nombre (nombre_empleado) y apellido1 de emp
 Solución:
 
 ```sql
+SELECT
+    p.nombre AS nombre_empleado,
+    p.apellido1,
+	t.nombre as nombre_proyecto,
+	t.ubicacion
+FROM 
+empleado p JOIN TRABAJA_EN e
+    ON p.dni = e.empleado
+	
+ JOIN proyecto t
+    ON e.proyecto = t.numero
 
+order by nombre_empleado asc
+		
 ```
 
 Tabla resultado:
