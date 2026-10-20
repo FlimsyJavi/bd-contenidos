@@ -322,7 +322,7 @@ SELECT
  E.Nombre, 
  E.Apellido1
 FROM Empleado S 
- INNER JOIN Empleado E ON (S.dni=E.supervisor)
+	 INNER JOIN Empleado E ON (S.dni=E.supervisor)
 WHERE S.sexo='F';
 ```
 
@@ -345,7 +345,14 @@ Tabla resultado:
 Escribe una consulta que devuelva los empleados que ganan entre 2000 y 10000 euros menos que su supervisor directo. Las columnas resultado deben ser: nombre_empleado, sueldo_empleado, nombre_supervisor y sueldo_supervisor.
 
 ```sql
-
+SELECT
+    A.nombre AS nombre_empleado,
+    A.sueldo AS sueldo_empleado,
+    B.nombre AS nombre_supervisor,
+    B.sueldo AS sueldo_supervisor
+FROM Empleado A
+INNER JOIN Empleado B ON A.supervisor = B.dni
+WHERE B.sueldo - A.sueldo BETWEEN 2000 AND 10000;
 ```
 
 Tabla resultado:
@@ -511,7 +518,14 @@ INSERT INTO Proyecto VALUES ('ProductoGTP',6,'Madrid',5);
 
 Solución:
 ```sql
-
+SELECT
+    P.nombre AS nombre_proyecto,
+    E.nombre AS nombre_empleado,
+    T.horas AS horas
+FROM PROYECTO P
+LEFT JOIN TRABAJA_EN T ON P.numero = T.proyecto
+LEFT JOIN EMPLEADO E ON T.empleado = E.dni
+ORDER BY nombre_proyecto ASC, nombre_empleado ASC;
 ```
 
 Tabla resultado:
@@ -642,7 +656,13 @@ Obtener un listado con el nombre completo de los empleados que **NO** tienen nin
 
 Solución:
 ```sql
-
+SELECT
+	A.nombre,
+	A.apellido1,
+	A.apellido2
+from Empleado A
+LEFT JOIN Familiar B on (A.dni=B.empleado)
+where B.relacion is null;
 ```
 
 Tabla resultado:
@@ -812,15 +832,25 @@ Escribe una consulta que devuelva para cada departamento su nombre (nombre_depar
 Solución:
 
 ```sql
-
+SELECT
+    D.nombre AS nombre_departamento,
+    COUNT(DISTINCT P.numero) AS num_proyectos,
+    COALESCE(SUM(T.horas), 0) AS total_horas_dedicadas
+FROM DEPARTAMENTO D
+LEFT JOIN PROYECTO P
+    ON D.numero = P.dpto
+LEFT JOIN TRABAJA_EN T
+    ON P.numero = T.proyecto
+GROUP BY D.numero, D.nombre
+ORDER BY total_horas_dedicadas DESC;
 ```
 
 Tabla resultado:
 
-| nombre_departamento | num_proyectos | total_horas_dedicadas | 
-| ------------------- | ------------- | --------------------- |
-| Investigación       | 3             | 140                   |
-| Administración      | 2             | 110                   |
-| Sede Central        | 1             | 25                    |
+| nombre_departamento | num_proyectos | total_horas_dedicadas |     |
+| ------------------- | ------------- | --------------------- | --- |
+| Investigación       | 3             | 140                   |     |
+| Administración      | 2             | 110                   |     |
+| Sede Central        | 1             | 25                    |     |
 
 ---
