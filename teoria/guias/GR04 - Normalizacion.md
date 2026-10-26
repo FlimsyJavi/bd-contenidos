@@ -29,10 +29,12 @@ Antes de la teoría formal, cuatro reglas informales que debe cumplir todo buen 
 
 ### Directriz 1 — Semántica clara de los atributos
 
-Un esquema de relación debe corresponderse con **un solo tipo de entidad** (o relación entre entidades). No se deben mezclar atributos de EMPLEADOS, DEPARTAMENTOS y PROYECTOS en la misma tabla; solo las **claves externas** hacen referencia a otras entidades.
+Un esquema de relación debe corresponderse con **un solo tipo de entidad** (o relación entre entidades). No se deben mezclar atributos de EMPLEADOS, DEPARTAMENTOS y PROYECTOS en la misma tabla; solo las **claves externas** hacen referencia a otras entidades.000
+
+.
 
 **Prueba rápida**: si no puedes explicar en una frase qué representa cada fila de la tabla, el diseño es sospechoso.
-
+00.0.00.............   
 ### Directriz 2 — Evitar redundancia y anomalías de actualización
 
 La información redundante desperdicia espacio y, sobre todo, provoca **anomalías**. Considera la relación mal diseñada:
