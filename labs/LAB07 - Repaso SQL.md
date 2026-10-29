@@ -26,7 +26,13 @@ Escribe una consulta que muestre el nombre, apellido1 y sueldo de los empleados 
 
 Solución:
 ```sql
-
+Select 
+ nombre, 
+ apellido1, 
+ sueldo
+From empleado
+where sueldo between 25000 and 40000 and (nombre like 'A%'or nombre like 'J%')
+order by sueldo desc;
 ```
 
 **Tabla resultado:**
@@ -52,7 +58,14 @@ Escribe una consulta que muestre, para cada departamento, el número de empleado
 
 Solución:
 ```sql
-
+Select 
+dpto, 
+count(dpto) as num_empleados, 
+sum(sueldo) as sueldo_total
+From empleado
+group by dpto
+having num_empleados >  1
+order by sueldo_total desc;
 ```
 
 **Tabla resultado:**
@@ -76,7 +89,17 @@ Escribe una consulta que muestre el nombre y apellido1 del empleado, el nombre d
 
 Solución:
 ```sql
-
+Select 
+a.nombre as nombre_empleado, 
+a.apellido1, 
+b.nombre as nombre_proyecto,
+c.nombre as nombre_departamento
+from empleado a
+left join TRABAJA_EN d on (a.dni=d.empleado)
+left join PROYECTO b  on (d.proyecto=b.numero)
+left join DEPARTAMENTO c on (b.dpto=c.numero)
+where a.apellido1 like 'P%'
+order by nombre_empleado;
 ```
 
 **Tabla resultado:**
